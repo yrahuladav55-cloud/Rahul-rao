@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rahul Rao — Web Developer & Creative Builder</title>
+  <meta name="description" content="Portfolio of Rahul Rao — Apple & Sketch aesthetic digital workspace." />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23000000'/><rect x='4' y='4' width='92' height='92' rx='20' fill='none' stroke='%23ffffff' stroke-width='2' stroke-dasharray='4 3'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='42' fill='%23ffffff'>RR</text></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    /* ==========================================================================
+       1. BLACK & WHITE + SKETCH THEME SYSTEM
+       ========================================================================== */
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --radius-full: 9999px;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #050507;
+      --bg-surface: #0e0e12;
+      --bg-card: rgba(18, 18, 22, 0.75);
+      --bg-card-hover: rgba(28, 28, 35, 0.9);
+      --border-sketch: rgba(255, 255, 255, 0.15);
+      --border-sketch-active: rgba(255, 255, 255, 0.65);
+      --text-primary: #f8fafc;
+      --text-secondary: #a1a1aa;
+      --text-muted: #52525b;
+      --accent: #ffffff;
+      --accent-invert: #000000;
+      --dock-bg: rgba(15, 15, 18, 0.82);
+      --dock-border: rgba(255, 255, 255, 0.16);
+      --shadow-dock: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
+      --sketch-grid: rgba(255, 255, 255, 0.035);
+      --sketch-accent-glow: rgba(255, 255, 255, 0.08);
+      --badge-bg: rgba(255, 255, 255, 0.08);
+      --badge-border: rgba(255, 255, 255, 0.2);
+    }
+
+    [data-theme="light"] {
+      --bg-body: #f7f7f8;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --bg-card-hover: rgba(255, 255, 255, 0.98);
+      --border-sketch: rgba(0, 0, 0, 0.12);
+      --border-sketch-active: rgba(0, 0, 0, 0.75);
+      --text-primary: #09090b;
+      --text-secondary: #52525b;
+      --text-muted: #a1a1aa;
+      --accent: #000000;
+      --accent-invert: #ffffff;
+      --dock-bg: rgba(255, 255, 255, 0.85);
+      --dock-border: rgba(0, 0, 0, 0.12);
+      --shadow-dock: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+      --sketch-grid: rgba(0, 0, 0, 0.035);
+      --sketch-accent-glow: rgba(0, 0, 0, 0.04);
+      --badge-bg: rgba(0, 0, 0, 0.04);
+      --badge-border: rgba(0, 0, 0, 0.15);
+    }
+
+    /* ==========================================================================
+       2. GLOBAL RESETS & SKETCH PATTERNS
+       ========================================================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      background-image: 
+        linear-gradient(to right, var(--sketch-grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--sketch-grid) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hand-Drawn Sketch Accent Line Helper */
+    .sketch-border {
+      border: 1.5px dashed var(--border-sketch);
+      position: relative;
+    }
+
+    .sketch-border::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 1px solid var(--border-sketch);
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* ==========================================================================
+       3. TOP NAVIGATION & GOOGLE SIGN-IN BAR
+       ========================================================================== */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      z-index: 850;
+      background: rgba(8, 8, 10, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-sketch);
+    }
+
+    [data-theme="light"] .top-nav {
+      background: rgba(247, 247, 248, 0.75);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      background: var(--text-primary);
+      color: var(--accent-invert);
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .auth-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Signed in profile pill */
+    .user-pill {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-sketch);
+      padding: 4px 12px 4px 5px;
+      border-radius: var(--radius-full);
+    }
+
+    .user-pill img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-pill span {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .logout-action {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .logout-action:hover {
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION (With Layered Apple Photo Mockup)
+       ========================================================================== */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7.5rem 0 5rem;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      box-shadow: 0 0 10px var(--text-primary);
+    }
+
+    .hero-heading {
+      font-size: clamp(2.4rem, 4.4vw, 4rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-role-line {
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      min-height: 2.2rem;
+    }
+
+    .typed-text {
+      color: var(--text-primary);
+      border-bottom: 2px dashed var(--border-sketch-active);
+      padding-bottom: 2px;
+    }
+
+    .hero-bio {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.25rem;
+      max-width: 500px;
+    }
+
+    .hero-btn-row {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.85rem 1.75rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-solid {
+      background: var(--accent);
+      color: var(--accent-invert);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-solid:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-outline {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-sketch);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-sketch-active);
+      transform: translateY(-3px);
+    }
+
+    /* 3D Multi-Layered Photo Mockup */
+    .photo-scene {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .scene-backdrop-card {
+      position: absolute;
+      width: 86%;
+      height: 94%;
+      background: var(--bg-card);
+      border: 1.5px dashed var(--border-sketch);
+      border-radius: var(--radius-lg);
+      transform: rotate(5deg) scale(0.96);
+      z-index: 1;
+    }
+
+    .main-photo-card {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-sketch);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 18px 14px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.5);
+      max-width: 350px;
+      width: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .main-photo-card:hover {
+      transform: translateY(-6px) rotate(-1deg);
+      border-color: var(--border-sketch-active);
+    }
+
+    .photo-box {
+      width: 100%;
+      height: 380px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #18181b;
+      position: relative;
+      border: 1px solid var(--border-sketch);
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .main-photo-card:hover .photo-box img {
+      transform: scale(1.03);
+    }
+
+    .photo-card-info {
+      padding-top: 14px;
+      text-align: center;
+    }
+
+    .photo-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .photo-handle {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       5. CONTENT SECTIONS (Skills, Projects, About, Contact)
+       ========================================================================== */
+    section {
+      padding: 5.5rem 0;
+    }
+
+    .section-headline {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    /* About */
+    .about-box {
+      background: var(--bg-card);
+      border: 1.5px dashed var(--border-sketch);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2.5rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .about-quote {
+      font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin-bottom: 2.5rem;
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      border-top: 1px solid var(--border-sketch);
+      padding-top: 2rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--badge-bg);
+      border: 1px solid var(--border-sketch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-sketch);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: var(--transition);
+    }
+
+    .skill-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-sketch-active);
+      transform: translateY(-4px);
+    }
+
+    .skill-icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      background: var(--badge-bg);
+      border: 1px solid var(--border-sketch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .skill-name {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-sketch);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+    }
+
+    .project-card:hover {
+      border-color: var(--border-sketch-active);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-wireframe-preview {
+      height: 180px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-sketch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .wireframe-browser {
+      width: 84%;
+      height: 75%;
+      border: 1px dashed var(--border-sketch-active);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg-body);
+    }
+
+    .wireframe-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .wireframe-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid var(--border-sketch-active);
+    }
+
+    .wireframe-bar {
+      height: 6px;
+      background: var(--border-sketch);
+      border-radius: 3px;
+      width: 100%;
+    }
+
+    .wireframe-bar.half {
+      width: 50%;
+    }
+
+    .project-details {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+
+    .tag-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+
+    .sketch-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      background: var(--badge-bg);
+      border: 1px solid var(--border-sketch);
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .contact-tile {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-sketch);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contact-tile:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-sketch-active);
+      transform: translateY(-6px);
+    }
+
+    .contact-tile-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--badge-bg);
+      border: 1px solid var(--border-sketch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .contact-tile-type {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .contact-tile-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    /* ==========================================================================
+       6. IPHONE-INSPIRED FLOATING APP DOCK
+       ========================================================================== */
+    .dock-holder {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      z-index: 900;
+      pointer-events: none;
+      padding: 0 1rem;
+    }
+
+    .ios-dock {
+      pointer-events: auto;
+      background: var(--dock-bg);
+      border: 1px solid var(--dock-border);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: var(--radius-full);
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-dock);
+    }
+
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+      gap: 3px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .dock-btn svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .dock-btn:hover {
+      color: var(--text-primary);
+      background: var(--badge-bg);
+    }
+
+    .dock-btn:hover svg {
+      transform: translateY(-2px) scale(1.15);
+    }
+
+    .dock-btn.active {
+      color: var(--text-primary);
+    }
+
+    .dock-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-primary);
+    }
+
+    .dock-sep {
+      width: 1px;
+      height: 22px;
+      background: var(--dock-border);
+      margin: 0 4px;
+    }
+
+    .theme-action {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-action:hover {
+      color: var(--text-primary);
+      background: var(--badge-bg);
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 0 7.5rem;
+      text-align: center;
+      border-top: 1px solid var(--border-sketch);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-bio {
+        margin: 0 auto 2.25rem;
+      }
+      .hero-btn-row {
+        justify-content: center;
+      }
+      .photo-scene {
+        order: -1;
+        margin-bottom: 2rem;
+      }
+      .main-photo-card {
+        max-width: 310px;
+      }
+      .photo-box {
+        height: 330px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .dock-btn span {
+        display: none;
+      }
+      .dock-btn {
+        padding: 10px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <span>Rahul Rao</span>
+        <span class="brand-tag">B&W // SKETCH</span>
+      </a>
+
+      <div class="auth-cluster">
+        <div class="user-pill" id="userPill">
+          <img src="" alt="Avatar" id="userAvatarImg" />
+          <span id="userNameTxt">User</span>
+          <button class="logout-action" id="signOutBtn" title="Sign out">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+          </button>
+        </div>
+
+        <div id="g_id_onload"
+          data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" 
+          data-type="standard" 
+          data-shape="pill" 
+          data-theme="filled_black" 
+          data-text="signin_with" 
+          data-size="medium">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-section" id="home">
+    <div class="container">
+      <div class="hero-layout">
+        <div>
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>AVAILABLE FOR HIRE</span>
+          </div>
+
+          <h1 class="hero-heading">
+            Hi, I’m Rahul Rao 👋
+          </h1>
+
+          <div class="hero-role-line">
+            <span class="typed-text" id="typeSlot"></span>
+          </div>
+
+          <p class="hero-bio">
+            I build modern, fast and beautiful websites that feel premium.
+          </p>
+
+          <div class="hero-btn-row">
+            <a href="#projects" class="btn btn-solid">
+              <span>View My Work</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              <span>Contact Me</span>
+              <i data-lucide="mail"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="photo-scene">
+          <div class="scene-backdrop-card"></div>
+          <div class="main-photo-card">
+            <div class="photo-box">
+              <img src="profile.png" alt="Rahul Rao" id="mainPhoto" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';" />
+            </div>
+            <div class="photo-card-info">
+              <div class="photo-name">Rahul Rao</div>
+              <div class="photo-handle">(RahulRao554)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-headline">
+        <span class="section-label">[ 01 // OVERVIEW ]</span>
+        <h2 class="section-title">A little about me</h2>
+      </div>
+
+      <div class="about-box">
+        <p class="about-quote">
+          “I’m Rahul Rao, a web developer passionate about creating modern websites and digital experiences. I focus on clean UI, smooth interactions, responsive design and making every project look professional.”
+        </p>
+
+        <div class="about-features">
+          <div class="feature-item">
+            <div class="feature-icon"><i data-lucide="layout"></i></div>
+            <div>
+              <strong>Apple Minimal UI</strong>
+              <p style="color: var(--text-secondary); font-size: 0.88rem;">Precision layouts with clean contrast.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i data-lucide="zap"></i></div>
+            <div>
+              <strong>Ultra Performance</strong>
+              <p style="color: var(--text-secondary); font-size: 0.88rem;">Fast rendering and lightweight codebase.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i data-lucide="shield"></i></div>
+            <div>
+              <strong>Secure OAuth</strong>
+              <p style="color: var(--text-secondary); font-size: 0.88rem;">Integrated Google sign-in standards.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <div class="section-headline">
+        <span class="section-label">[ 02 // CAPABILITIES ]</span>
+        <h2 class="section-title">Skills & Stack</h2>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="code-2"></i></div>
+          <span class="skill-name">HTML</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="palette"></i></div>
+          <span class="skill-name">CSS</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="terminal"></i></div>
+          <span class="skill-name">JavaScript</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="box"></i></div>
+          <span class="skill-name">React</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="server"></i></div>
+          <span class="skill-name">Node.js</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="sparkles"></i></div>
+          <span class="skill-name">UI/UX Design</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="smartphone"></i></div>
+          <span class="skill-name">Responsive Web Design</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon-wrap"><i data-lucide="cpu"></i></div>
+          <span class="skill-name">Modern Web Apps</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="section-headline">
+        <span class="section-label">[ 03 // PORTFOLIO ]</span>
+        <h2 class="section-title">Selected Projects</h2>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-wireframe-preview">
+            <div class="wireframe-browser">
+              <div class="wireframe-dots">
+                <div class="wireframe-dot"></div>
+                <div class="wireframe-dot"></div>
+                <div class="wireframe-dot"></div>
+              </div>
+              <div class="wireframe-bar"></div>
+              <div class="wireframe-bar half"></div>
+            </div>
+          </div>
+          <div class="project-details">
+            <h3 class="project-title">Dark Glass SaaS Platform</h3>
+            <p class="project-desc">High performance analytics interface featuring realtime telemetry and smooth interactions.</p>
+            <div class="tag-cluster">
+              <span class="sketch-tag">React</span>
+              <span class="sketch-tag">Node.js</span>
+              <span class="sketch-tag">UI/UX</span>
+            </div>
+            <a href="#contact" class="btn btn-outline" style="width: 100%; border-radius: var(--radius-md);">
+              <span>View Project</span>
+              <i data-lucide="external-link"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-wireframe-preview">
+            <div class="wireframe-browser">
+              <div class="wireframe-dots">
+                <div class="wireframe-dot"></div>
+                <div class="wireframe-dot"></div>
+                <div class="wireframe-dot"></div>
+              </div>
+              <div class="wireframe-bar"></div>
+              <div class="wireframe-bar half"></div>
+            </div>
+          </div>
+          <div class="project-details">
+            <h3 class="project-title">Minimalist Storefront</h3>
+            <p class="project-desc">Monochrome luxury brand shop with instant search and micro-interactions.</p>
+            <div class="tag-cluster">
+              <span class="sketch-tag">JavaScript</span>
+              <span class="sketch-tag">Responsive</span>
+              <span class="sketch-tag">CSS</span>
+            </div>
+            <a href="#contact" class="btn btn-outline" style="width: 100%; border-radius: var(--radius-md);">
+              <span>View Project</span>
+              <i data-lucide="external-link"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-headline">
+        <span class="section-label">[ 04 // CONTACT ]</span>
+        <h2 class="section-title">Let’s build something great.</h2>
+      </div>
+
+      <div class="contact-grid">
+        <a href="mailto:yrahuladav55@gmail.com" class="contact-tile">
+          <div class="contact-tile-icon"><i data-lucide="mail"></i></div>
+          <span class="contact-tile-type">Email 1</span>
+          <span class="contact-tile-val">yrahuladav55@gmail.com</span>
+        </a>
+
+        <a href="mailto:yraorahul55@gmail.com" class="contact-tile">
+          <div class="contact-tile-icon"><i data-lucide="send"></i></div>
+          <span class="contact-tile-type">Email 2</span>
+          <span class="contact-tile-val">yraorahul55@gmail.com</span>
+        </a>
+
+        <a href="https://www.snapchat.com/add/rahul_rao554" target="_blank" rel="noopener noreferrer" class="contact-tile">
+          <div class="contact-tile-icon"><i data-lucide="message-circle"></i></div>
+          <span class="contact-tile-type">Snapchat</span>
+          <span class="contact-tile-val">@rahul_rao554</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> RAHUL RAO — BUILT WITH PRECISION</p>
+    </div>
+  </footer>
+
+  <div class="dock-holder">
+    <nav class="ios-dock">
+      <a href="#home" class="dock-btn active" data-sec="home">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#about" class="dock-btn" data-sec="about">
+        <i data-lucide="user"></i>
+        <span>About</span>
+      </a>
+      <a href="#skills" class="dock-btn" data-sec="skills">
+        <i data-lucide="layers"></i>
+        <span>Skills</span>
+      </a>
+      <a href="#projects" class="dock-btn" data-sec="projects">
+        <i data-lucide="folder-git-2"></i>
+        <span>Projects</span>
+      </a>
+      <a href="#contact" class="dock-btn" data-sec="contact">
+        <i data-lucide="message-square"></i>
+        <span>Contact</span>
+      </a>
+
+      <div class="dock-sep"></div>
+
+      <button class="theme-action" id="themeBtn" aria-label="Toggle Theme">
+        <i data-lucide="sun" id="themeIcon"></i>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    // Initialize icons & year
+    lucide.createIcons();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 1. Google Identity Services: Real JWT Token Handler
+    function parseJwt(token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    function handleCredentialResponse(response) {
+      const user = parseJwt(response.credential);
+      displayUserSession(user.name, user.picture);
+      localStorage.setItem('rr_user', JSON.stringify({ name: user.name, picture: user.picture }));
+    }
+
+    function displayUserSession(name, picture) {
+      const pill = document.getElementById('userPill');
+      const avatar = document.getElementById('userAvatarImg');
+      const nameTxt = document.getElementById('userNameTxt');
+      const gsiBtn = document.querySelector('.g_id_signin');
+
+      avatar.src = picture;
+      nameTxt.textContent = name.split(' ')[0];
+      pill.style.display = 'inline-flex';
+      if (gsiBtn) gsiBtn.style.display = 'none';
+    }
+
+    // Check existing login session on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('rr_user');
+      if (savedUser) {
+        const parsed = JSON.parse(savedUser);
+        displayUserSession(parsed.name, parsed.picture);
+      }
+    });
+
+    // Logout
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+      localStorage.removeItem('rr_user');
+      document.getElementById('userPill').style.display = 'none';
+      const gsiBtn = document.querySelector('.g_id_signin');
+      if (gsiBtn) gsiBtn.style.display = 'block';
+    });
+
+    // 2. Typing Effect in Hero
+    const roles = [
+      "Web Developer & Creative Builder",
+      "Apple UI/UX Specialist",
+      "Modern Frontend Craftsman"
+    ];
+    let rIdx = 0, cIdx = 0, isDeleting = false;
+    const typeElem = document.getElementById('typeSlot');
+
+    function typeLoop() {
+      const current = roles[rIdx];
+      typeElem.textContent = isDeleting 
+        ? current.substring(0, cIdx - 1) 
+        : current.substring(0, cIdx + 1);
+
+      cIdx = isDeleting ? cIdx - 1 : cIdx + 1;
+
+      let speed = isDeleting ? 40 : 85;
+      if (!isDeleting && cIdx === current.length) {
+        speed = 2000;
+        isDeleting = true;
+      } else if (isDeleting && cIdx === 0) {
+        isDeleting = false;
+        rIdx = (rIdx + 1) % roles.length;
+        speed = 350;
+      }
+      setTimeout(typeLoop, speed);
+    }
+    typeLoop();
+
+    // 3. Floating Dock Active State on Scroll
+    const sections = document.querySelectorAll('section');
+    const dockButtons = document.querySelectorAll('.dock-btn');
+    window.addEventListener('scroll', () => {
+      let curr = '';
+      sections.forEach(s => {
+        if (pageYOffset >= s.offsetTop - 200) curr = s.getAttribute('id');
+      });
+      dockButtons.forEach(b => {
+        b.classList.remove('active');
+        if (b.getAttribute('data-sec') === curr) b.classList.add('active');
+      });
+    });
+
+    // 4. Black/White Theme Switcher
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const root = document.documentElement;
+
+    themeBtn.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      const nextTheme = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', nextTheme);
+      themeIcon.setAttribute('data-lucide', isDark ? 'moon' : 'sun');
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
